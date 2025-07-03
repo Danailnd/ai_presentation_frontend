@@ -1,9 +1,0 @@
-<div class="mobile-sidebar-buttons">
-  <button
-    *ngFor="let item of items"
-    (click)="onSelect(item.label)"
-    [ngClass]="{ active: item.label === activeLabel }"
-  >
-    <span>{{ item.label }}</span>
-  </button>
-</div>

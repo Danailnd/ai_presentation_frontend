@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ChangeMetadata } from '../models/change.metadata';
 
 /**
  * Supported HTTP methods:
@@ -29,11 +28,8 @@ export class HttpsService {
    * @param body Request body payload
    * @returns Observable of the typed response
    */
-  post<T>(endpoint: string, body: T, metadata?: ChangeMetadata): Observable<T> {
-    const headers = this.buildHeaders(metadata);
-    return this.httpClient.post<T>(`${this.apiUrl}${endpoint}`, body, {
-      headers,
-    });
+  post<T>(endpoint: string, body: T): Observable<T> {
+    return this.httpClient.post<T>(`${this.apiUrl}${endpoint}`, body);
   }
 
   /**
@@ -55,32 +51,7 @@ export class HttpsService {
    * @param body Partial update object containing only fields to change
    * @returns Observable of the updated resource
    */
-  patch<T>(
-    endpoint: string,
-    body: Partial<T>,
-    metadata?: ChangeMetadata
-  ): Observable<T> {
-    const headers = this.buildHeaders(metadata);
-    return this.httpClient.patch<T>(`${this.apiUrl}${endpoint}`, body, {
-      headers,
-    });
-  }
-
-  private buildHeaders(metadata?: ChangeMetadata): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-
-    console.log('Building headers with metadata:', metadata);
-
-    if (metadata?.reason?.trim()) {
-      headers = headers.set('Change-Reason', metadata.reason.trim());
-    }
-
-    if (metadata?.ticketId?.trim()) {
-      headers = headers.set('Ticket-ID', metadata.ticketId.trim());
-    }
-
-    return headers;
+  patch<T>(endpoint: string, body: Partial<T>): Observable<T> {
+    return this.httpClient.patch<T>(`${this.apiUrl}${endpoint}`, body);
   }
 }

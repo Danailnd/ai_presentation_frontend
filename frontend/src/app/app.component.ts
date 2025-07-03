@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { SidebarComponent } from './components/common/sidebar/sidebar.component';
 import { ToolbarComponent } from './components/common/toolbar/toolbar.component';
 import { Observable } from 'rxjs';
-import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +31,7 @@ export class AppComponent implements OnInit {
   loginDisplay$!: Observable<boolean>;
   //test auto-deployment
 
-  constructor(private renderer: Renderer2, public authService: AuthService) {}
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -46,7 +45,6 @@ export class AppComponent implements OnInit {
         this.renderer.removeClass(document.body, 'dark-theme');
       }
     }
-    this.loginDisplay$ = this.authService.loginDisplay$;
   }
 
   toggleTheme() {
@@ -60,16 +58,5 @@ export class AppComponent implements OnInit {
       this.renderer.removeClass(bodyElement, 'dark-theme');
       localStorage.setItem('theme', 'light');
     }
-  }
-  loginRedirect() {
-    this.authService.loginRedirect();
-  }
-
-  loginPopup() {
-    this.authService.loginPopup();
-  }
-
-  logout(popup?: boolean) {
-    this.authService.logout(popup);
   }
 }
