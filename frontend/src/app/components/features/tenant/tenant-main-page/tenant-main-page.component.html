@@ -1,0 +1,97 @@
+<div class="container">
+  @if(!id){
+  <app-default-paper style="flex: 2" [enableScroll]="false">
+    <div class="header">
+      <h2 class="header-title">
+        Tenants
+        <button
+          mat-icon-button
+          type="button"
+          (click)="handleExportToCSV()"
+          matTooltip="Export to CSV"
+          matTooltipShowDelay="600"
+          aria-label="Export tenants to CSV"
+          class="export-btn"
+        >
+          @if(isExporting){
+          <mat-progress-spinner
+            mode="indeterminate"
+            diameter="24"
+            strokeWidth="3"
+            color="primary"
+          ></mat-progress-spinner>
+          }@else{
+          <mat-icon>file_download</mat-icon>
+          }
+        </button>
+      </h2>
+
+      <div class="header-actions">
+        <button
+          disabled="true"
+          mat-fab
+          style="margin-right: 20px"
+          type="button"
+          (click)="goToTenantCreationPage()"
+          matTooltip="Create new tenant."
+          matTooltipShowDelay="600"
+          matTooltipPosition="left"
+        >
+          <mat-icon class="icon">{{ "add" }} </mat-icon>
+        </button>
+      </div>
+    </div>
+    <app-tenant-table
+      class="table"
+      (rowClick)="onTenantSelected($event.tenant, $event.scrollPosition)"
+      [id]="id"
+      [tenants]="tenants"
+      [loading]="loading"
+      [scrollPosition]="scrollPosition"
+      (changed)="fetchTenants()"
+    ></app-tenant-table>
+  </app-default-paper>
+  } @else{@if(!isPhoneView && isTableVisible){
+  <app-default-paper style="flex: 2" [enableScroll]="false">
+    <div class="header">
+      <h2 style="text-align: center; margin-bottom: 30px">Tenants</h2>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onExpandToggle()"
+        matTooltip="Hide table"
+        matTooltipShowDelay="600"
+        matTooltipPosition="right"
+      >
+        <mat-icon class="icon">{{ "navigate_before" }} </mat-icon>
+      </button>
+    </div>
+    <app-tenant-table
+      class="table"
+      (rowClick)="onTenantSelected($event.tenant, $event.scrollPosition)"
+      [id]="id"
+      [tenants]="tenants"
+      [loading]="loading"
+      [scrollPosition]="scrollPosition"
+      (changed)="fetchTenants()"
+    ></app-tenant-table>
+  </app-default-paper>
+  } @if(!isPhoneView && !isTableVisible){
+  <app-default-paper
+    style="flex: 0.1"
+    [enableScroll]="false"
+    (click)="onExpandToggle()"
+    [clickable]="true"
+  >
+    <mat-icon class="extender-icon">keyboard_arrow_right</mat-icon>
+  </app-default-paper>
+  }
+  <app-default-paper style="flex: 11" [noPadding]="true">
+    <app-tenant-view
+      style="height: 100%"
+      [tenantId]="selectedTenant?.id || ''"
+      (saved)="fetchTenants()"
+    ></app-tenant-view>
+  </app-default-paper>
+  }
+</div>

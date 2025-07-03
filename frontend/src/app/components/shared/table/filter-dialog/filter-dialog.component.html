@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Filter Table</h2>
+<div style="height: 2px"></div>
+<mat-dialog-content class="filter-dialog-content">
+  <div *ngFor="let column of data.columns" class="filter-group">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ column.label }}</mat-label>
+      <mat-select [(value)]="filtersState[column.key]">
+        <mat-option value="ALL">All</mat-option>
+        <mat-option
+          *ngFor="let option of data.getColumnValues(column.key)"
+          [value]="option"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="resetFilters()">Reset</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="applyFilters()">
+    Apply
+  </button>
+</mat-dialog-actions>

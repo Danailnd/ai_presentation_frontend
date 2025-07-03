@@ -1,0 +1,14 @@
+<button
+  mat-icon-button
+  class="copy-icon-inline"
+  (click)="copyToClipboard(); $event.stopPropagation()"
+  (mousedown)="$event.stopPropagation()"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+  [matTooltip]="currentTooltip"
+  [matTooltipPosition]="tooltipPosition"
+  matTooltipShowDelay="0"
+  [attr.aria-label]="ariaLabel"
+>
+  <mat-icon>content_copy</mat-icon>
+</button>

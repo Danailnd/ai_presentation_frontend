@@ -1,0 +1,111 @@
+<h2 mat-dialog-title class="dialog-title">
+  {{ data.title || "Confirmation Required" }}
+</h2>
+
+<div
+  *ngIf="data.banner"
+  class="confirmation-banner"
+  [ngClass]="data.banner.severity"
+>
+  <mat-icon class="banner-icon">warning</mat-icon>
+  <span class="banner-text">{{ data.banner.text }}</span>
+</div>
+
+<mat-dialog-content [formGroup]="form">
+  <p *ngIf="data.message">{{ data.message }}</p>
+
+  <ul *ngIf="hasChanges" class="change-summary">
+    <li *ngFor="let change of data.changes">
+      <strong>{{ change.field }}</strong>
+      <div>
+        <span class="change-label">From: </span>
+        <span class="from-value">{{ change.oldValue }}</span>
+      </div>
+      <div>
+        <span class="change-label">To: </span>
+        <span class="to-value">{{ change.newValue }}</span>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Confirmation text -->
+  <div *ngIf="data.requiredText" class="confirmation-instructions">
+    <p class="instruction-hint">Type the following to confirm:</p>
+    <p class="required-text">{{ data.requiredText }}</p>
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width dense"
+      [class.mat-form-field-invalid]="
+        showErrors && (isUserInputEmpty || isUserInputWrong)
+      "
+    >
+      <input
+        matInput
+        formControlName="userInput"
+        autocomplete="off"
+        placeholder="Confirmation text..."
+      />
+    </mat-form-field>
+
+    <div *ngIf="showErrors && isUserInputEmpty" class="error-message">
+      <mat-icon class="error-icon">warning</mat-icon>
+      This field is required
+    </div>
+
+    <div *ngIf="showErrors && isUserInputWrong" class="error-message">
+      <mat-icon class="error-icon">warning</mat-icon>
+      The confirmation text does not match
+    </div>
+  </div>
+
+  <div class="extra-fields">
+    <mat-form-field
+      *ngIf="data.ticketIdEnabled"
+      appearance="outline"
+      class="full-width dense"
+      [class.mat-form-field-invalid]="showErrors && isTicketIdInvalid"
+    >
+      <mat-label>Ticket id</mat-label>
+      <input matInput formControlName="ticketId" autocomplete="off" />
+    </mat-form-field>
+
+    <mat-form-field
+      *ngIf="data.reasonEnabled"
+      appearance="outline"
+      class="full-width dense"
+    >
+      <mat-label>Reason</mat-label>
+      <textarea
+        matInput
+        rows="2"
+        formControlName="reason"
+        autocomplete="off"
+      ></textarea>
+    </mat-form-field>
+
+    <div *ngIf="showErrors && isTicketIdOrReasonMissing" class="error-message">
+      <mat-icon class="error-icon">warning</mat-icon>
+      Enter either Ticket id or Reason
+    </div>
+    <div *ngIf="showErrors && isTicketIdNotDigits" class="error-message">
+      <mat-icon class="error-icon">warning</mat-icon>
+      Ticket ID must contain only digits
+    </div>
+
+    <div *ngIf="showErrors && isTicketIdWrongLength" class="error-message">
+      <mat-icon class="error-icon">warning</mat-icon>
+      Ticket ID must be exactly 10 digits
+    </div>
+
+    <div *ngIf="showErrors && isReasonTooShort" class="error-message">
+      <mat-icon class="error-icon">warning</mat-icon>
+      Reason must be at least 6 characters long
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onConfirm()">Confirm</button>
+</mat-dialog-actions>

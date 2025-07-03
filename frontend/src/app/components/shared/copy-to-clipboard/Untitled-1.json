@@ -1,0 +1,13 @@
+{
+  "CustomerID": "2888daac-059f-47aa-964a-694bb6b6953c",
+  "SqlConnectionString": "21XwD0c9v47nxlZdblUNjSXA8L+QFABdfy665l7y+8FaaGCy3R30UJS/KJRzfAzGaDpr+D5O6LBdx71vZTde0yu1qTKrQzuVbq3B4OgaTxe1YhOScUIEsp/vwI9h357m60eaHupX2UTF+fQT5BN4sjkGmnUdvu/KhTyEj7BkR307m2GBj54rQWk/hdM7hddA3C9x7qu0YgJSAmGTVc3XgPpfe/rpPpvqjzy2HbwSfVUlcmjqoTlP3nHr3xXwurm/htiwAVeV6GxRPHhwFMngYu0ASFy8emNCk5pFVHYYoHjWzfBtv0u6WJayUF20Wk0t3UyMLravtM18sHh9NVSQX7/kRl3ESBtujqr852tLxSI=",
+  "DataService": {
+    "Address": "https://app-itdh-ds-qa.azurewebsites.net/DataService.svc"
+  },
+  "FileStorage": {
+    "Name": "quality",
+    "ConnectionString": "DefaultEndpointsProtocol=https;AccountName=stitdhqa001;AccountKey=stitdhqa001-appKey;EndpointSuffix=core.windows.net",
+    "Root": "FileStorage",
+    "Type": "AzureBlob"
+  }
+}

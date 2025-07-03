@@ -1,0 +1,24 @@
+<div class="container">
+  <app-default-paper
+    class="paper"
+    [ngClass]="{ phone: isPhoneView }"
+    [noPadding]="true"
+  >
+    <div class="content">
+      <mat-icon class="icon">build</mat-icon>
+      <h1 class="headline">Backend is Down</h1>
+      <p class="subtext">Refresh the page to check if the issue is resolved.</p>
+      <button
+        mat-icon-button
+        class="large-button"
+        (click)="checkBackendStatus()"
+        aria-label="Refresh"
+        matTooltip="Retry connection."
+        matTooltipShowDelay="800"
+        matTooltipPosition="below"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div></app-default-paper
+  >
+</div>

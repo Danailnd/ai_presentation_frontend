@@ -1,0 +1,232 @@
+<div class="table-wrapper">
+  <div class="table-toolbar">
+    <!-- Left: Search -->
+    <div
+      class="toolbar-section left-section"
+      [ngClass]="{ 'compact-search': phoneViewMode }"
+    >
+      @if (search !== null) {
+      <app-search (searchTriggered)="onSearchTriggered($event)"></app-search>
+      }
+    </div>
+
+    <!-- Middle: Chips -->
+
+    <div class="toolbar-section chip-section">
+      @if (!phoneViewMode && hasActiveFilters) {
+      <div class="active-filters">
+        <div class="custom-chip" *ngFor="let entry of activeFilterEntries">
+          <span class="chip-label">{{ entry.label }}: {{ entry.value }}</span>
+          <button
+            class="chip-remove"
+            aria-label="Remove filter"
+            (click)="removeFilter(entry.key)"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Right: Filter icon -->
+    <div class="toolbar-section right-section">
+      @if (filters !== null) {
+      <div class="filter-button-container">
+        <button
+          mat-icon-button
+          (click)="openFilterDialog()"
+          aria-label="Open filters"
+          [matBadge]="activeFilterCount"
+          matBadgeColor="primary"
+          [matBadgeHidden]="!hasActiveFilters"
+          matBadgePosition="above after"
+          [matTooltip]="'Filter'"
+          matTooltipShowDelay="600"
+        >
+          <mat-icon>filter_alt</mat-icon>
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div #tableContainer class="table-container">
+    <!-- search and filter fields above table -->
+    <mat-table
+      [dataSource]="dataSource"
+      class="custom-table"
+      [ngClass]="{ 'dense-table': tableSize === 'dense' }"
+      matSort
+      multiTemplateDataRows
+    >
+      <!-- multiSelect -->
+      <ng-container *ngIf="multiSelect" matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="toggleAllRows()"
+            [checked]="allRowsSelected"
+            [indeterminate]="selectedRowIds.size > 0 && !allRowsSelected"
+          ></mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="toggleRowSelection(row)"
+            [checked]="isRowInSelection(row)"
+          ></mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Handle each cell (assign value and give tooltip) -->
+      <ng-container
+        *ngFor="let column of columns"
+        [matColumnDef]="asString(column.key)"
+      >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ column.label }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span
+            tabindex="0"
+            role="button"
+            [matTooltip]="
+              column.disableTooltip ? null : getTooltip(element, column)
+            "
+            matTooltipShowDelay="500"
+            matTooltipHideDelay="200"
+            matTooltipPosition="right"
+            [ngClass]="{
+              'clickable-name':
+                column.key === expandableRows && hasOnClickAction
+            }"
+            (click)="
+              column.key === expandableRows && hasOnClickAction
+                ? handleRowClick(element)
+                : null
+            "
+            (keydown.enter)="
+              column.key === expandableRows && hasOnClickAction
+                ? handleRowClick(element)
+                : null
+            "
+          >
+            @if(column.customCell){
+            <div class="icon-wrapper">
+              <mat-icon class="boolean-icon">
+                {{ column.customCell(element[column.key]) }}
+              </mat-icon>
+            </div>
+            }@else{
+            <span class="cell-with-copy">
+              {{ truncate(element[column.key]) }}
+              @if (column.copyable) {
+              <app-copy-to-clipboard
+                [value]="asString(element[column.key] ?? '')"
+                [tooltipCopy]="'Copy'"
+                [tooltipCopied]="'Copied'"
+                tooltipPosition="above"
+                ariaLabel="Copy value"
+                class="copy-inline-button"
+              />
+              }
+            </span>
+            }
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Row Header -->
+      <mat-header-row
+        *matHeaderRowDef="displayedColumns; sticky: true"
+        [ngClass]="{
+          'header-filled': headerRowType === 'filled',
+          'header-light': headerRowType === 'light'
+        }"
+      >
+      </mat-header-row>
+
+      <!-- Expandable rows logic -->
+      @if(expandableRows !== null){
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.colapsed-detail-row]="isExpandedRow(row)"
+      >
+      </mat-row>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="colapsed-detail-row"
+      ></tr>
+      <ng-container matColumnDef="expandedDetail">
+        <mat-cell mat-cell *matCellDef="let element">
+          <div class="detail-wrapper" [class.expanded]="isExpandedRow(element)">
+            <div class="element-detail">
+              <div class="element-detail-content">
+                <div
+                  class="detail-row"
+                  *ngFor="let column of columnsWithoutExpanded"
+                >
+                  <strong>{{ column.label }}:</strong>
+                  <span class="detail-value">
+                    <ng-container *ngIf="column.customCell; else plainText">
+                      <mat-icon class="boolean-icon">
+                        {{ column.customCell(element[column.key], element) }}
+                      </mat-icon>
+                    </ng-container>
+                    <ng-template #plainText>
+                      {{ element[column.key] }}
+                    </ng-template>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Action Button Column -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell
+          *matHeaderCellDef
+          class="action-cell"
+        ></mat-header-cell>
+        <mat-cell *matCellDef="let row" class="action-cell">
+          <button
+            mat-icon-button
+            (click)="toggleExpand(row); $event.stopPropagation()"
+            [matTooltip]="isExpandedRow(row) ? 'Collapse' : 'Expand'"
+            aria-label="Toggle row"
+          >
+            <mat-icon>
+              {{ isExpandedRow(row) ? "expand_more" : "chevron_right" }}
+            </mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Regular roles logic -->
+      } @else {
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [ngClass]="{
+          'selectable-row': isSelectable,
+          'selected-row': isRowSelected(row)
+        }"
+        (click)="handleRowClick(row)"
+        (keydown.enter)="handleRowClick(row)"
+        tabindex="0"
+        matRipple
+        [matRippleDisabled]="!isSelectable"
+      >
+      </mat-row>
+      }
+    </mat-table>
+    <div class="no-data-wrapper" *ngIf="showNoDataMessage">
+      <div class="no-data-message">
+        <mat-icon>info</mat-icon>
+        No data found.
+      </div>
+    </div>
+  </div>
+</div>

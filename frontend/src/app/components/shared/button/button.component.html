@@ -1,0 +1,13 @@
+<button
+  class="action-button"
+  [ngClass]="[type, disabled ? 'disabled' : '']"
+  (click)="handleClick()"
+  matRipple
+  [disabled]="disabled"
+  [matRippleDisabled]="disabled"
+>
+  <div class="button-content">
+    <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
+    {{ text }}
+  </div>
+</button>

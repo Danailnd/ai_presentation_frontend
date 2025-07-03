@@ -1,0 +1,45 @@
+.paper {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 0;
+  height: 100%;
+  padding: 5px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--mat-sys-surface-dim);
+    }
+  }
+
+  &.no-padding {
+    padding: 0;
+  }
+}
+
+.paper-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  min-height: 0;
+
+  padding-right: 10px;
+  margin-right: -10px;
+
+  scrollbar-color: var(--mat-sys-primary) transparent;
+  scrollbar-width: thin;
+
+  &.scroll-enabled {
+    overflow-y: auto;
+  }
+
+  &.scroll-disabled {
+    overflow-y: hidden;
+  }
+}

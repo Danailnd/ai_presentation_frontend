@@ -1,0 +1,11 @@
+<mat-nav-list>
+  <mat-list-item
+    class="mat-list-item"
+    *ngFor="let item of items"
+    (click)="onSelect(item.label)"
+    [ngClass]="{ active: item.label === activeLabel }"
+  >
+    <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+    <span class="text">{{ item.label }}</span>
+  </mat-list-item>
+</mat-nav-list>

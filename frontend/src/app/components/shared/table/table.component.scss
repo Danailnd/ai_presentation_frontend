@@ -1,0 +1,337 @@
+/* ========== Layout Containers ========== */
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  width: 100%;
+}
+
+.table-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: var(--mat-sys-primary) transparent !important;
+  scrollbar-width: thin;
+  width: 100%;
+  max-height: 100%;
+  position: relative;
+}
+
+/* ========== Toolbar ========== */
+.table-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--mat-sys-surface-container);
+  border: 1px solid var(--mat-sys-surface-container-highest);
+
+  .toolbar-section {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+
+    &.left-section {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+
+      app-search {
+        width: 100%;
+        min-width: 0;
+        max-width: 300px;
+      }
+    }
+
+    &.chip-section {
+      flex: 1 1 auto;
+      overflow: hidden;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &.right-section {
+      flex: 0 0 auto;
+      justify-content: flex-end;
+    }
+  }
+
+  .active-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 100%;
+    min-width: 0;
+    text-align: right;
+    justify-content: flex-end;
+  }
+
+  .filter-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin-left: 10px;
+    margin-right: 5px;
+  }
+
+  @media (max-width: 600px) {
+    .table-toolbar {
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+/* ========== Table Styling ========== */
+.custom-table {
+  border: 1px solid var(--mat-sys-surface-container-highest);
+  z-index: 0;
+
+  mat-header-cell {
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 16px;
+    text-align: center;
+    border: none;
+    box-sizing: border-box;
+    line-height: 1;
+  }
+
+  .header-filled mat-header-cell {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  .header-light mat-header-cell {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  mat-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-bottom: none !important;
+  }
+
+  mat-row {
+    border: 1px solid var(--mat-sys-surface-container-highest);
+  }
+
+  mat-row.selectable-row {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--mat-sys-surface-container);
+    }
+  }
+
+  mat-row.selected-row {
+    background: var(--mat-sys-surface-container-highest);
+    font-weight: bold;
+  }
+
+  mat-header-row {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  }
+
+  .mat-column-select {
+    width: 48px;
+    max-width: 48px;
+    padding: 0 8px;
+    flex: 0 0 48px;
+    text-align: center;
+
+    mat-checkbox {
+      margin: 0 auto;
+    }
+  }
+}
+
+/* ========== Dense Table Option ========== */
+.dense-table mat-cell {
+  font-size: var(--mat-sys-body-small);
+}
+
+/* ========== Expandable Row Section ========== */
+.detail-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  grid-template-columns: 100%;
+  overflow: hidden;
+  transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.expanded {
+    grid-template-rows: 1fr;
+  }
+}
+
+tr.colapsed-detail-row {
+  height: 0;
+}
+
+.element-detail {
+  display: flex;
+  min-height: 0;
+}
+
+.element-detail-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 14px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  .detail-value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    mat-icon.boolean-icon {
+      font-size: 18px;
+      vertical-align: middle;
+    }
+  }
+}
+
+/* ========== Action Column ========== */
+::ng-deep .mat-column-action,
+.action-cell {
+  max-width: 68px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+/* ========== Cell Types ========== */
+.boolean-icon,
+mat-icon.boolean-icon {
+  font-size: 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.clickable-name {
+  cursor: pointer;
+  color: var(--mat-sys-primary);
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* ========== Custom Filter Chips ========== */
+.custom-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  border-radius: 10px;
+  padding: 4px 8px;
+  padding-left: 16px;
+  font-size: 14px;
+  margin: 2px;
+  line-height: 1;
+  max-width: 100%;
+  white-space: nowrap;
+  min-height: 20px;
+
+  .chip-label {
+    margin-right: 6px;
+    font-weight: 500;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .chip-remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+
+    mat-icon {
+      font-size: 18px;
+      line-height: 1;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--mat-sys-primary);
+    }
+  }
+}
+
+/* ========== No Data State ========== */
+.no-data-wrapper {
+  padding: 24px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
+  font-style: italic;
+}
+
+.no-data-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: var(--mat-sys-on-surface);
+}
+
+/* ========== Badge Styling ========== */
+:host ::ng-deep .mat-badge-content {
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary) !important;
+}
+
+.cell-with-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  .copy-inline-button {
+    margin-left: 4px;
+    display: inline-flex;
+  }
+}

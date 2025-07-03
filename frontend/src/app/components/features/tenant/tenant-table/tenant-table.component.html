@@ -1,0 +1,62 @@
+@if(loading){
+<mat-spinner class="spinner"></mat-spinner>
+} @else{ @if(isAnyRowSelected){
+<div class="selected-rows-actions">
+  @if(!isPhoneView) {
+  <mat-chip selected>
+    {{ selectedRows.size }} tenant{{ selectedRows.size === 1 ? "" : "s" }}
+    selected
+  </mat-chip>
+  }
+  <button
+    mat-button
+    [matMenuTriggerFor]="commandsMenu"
+    color="primary"
+    class="command-button"
+    mat-flat-button
+  >
+    <mat-icon>menu</mat-icon>
+    Operations
+  </button>
+  <mat-menu #commandsMenu="matMenu">
+    <button mat-menu-item (click)="handleBlock()">
+      <mat-icon>lock</mat-icon>
+      <span>Block</span>
+    </button>
+    <button mat-menu-item (click)="handleUnblock()">
+      <mat-icon>lock_open</mat-icon>
+      <span>Activate</span>
+    </button>
+    <button
+      mat-menu-item
+      (click)="handleStartMailReader()"
+      style="margin-right: 7px"
+    >
+      <mat-icon>play_arrow</mat-icon>
+      <span>Start Mail Reader</span>
+    </button>
+    <button mat-menu-item (click)="handleStopMailReader()">
+      <mat-icon>stop</mat-icon>
+      <span>Stop Mail Reader</span>
+    </button>
+  </mat-menu>
+</div>
+}
+<app-table
+  *ngIf="columns.length > 0"
+  [data]="tenants"
+  [columns]="id ? columnsLight : columns"
+  class="table"
+  [selectedRow]="id"
+  [headerRowType]="id ? 'light' : 'filled'"
+  [tableSize]="id ? 'dense' : 'normal'"
+  [scrollPosition]="scrollPosition"
+  [search]="['name']"
+  [multiSelect]="id ? false : true"
+  (selectedRowsChanged)="onSelectedRowsChanged($event)"
+  [onClick]="onRowClick.bind(this)"
+  [expandableRows]="isPhoneView ? 'name' : null"
+  [filters]="!id ? filterableColumns : null"
+  [phoneViewMode]="isPhoneView"
+></app-table>
+}
