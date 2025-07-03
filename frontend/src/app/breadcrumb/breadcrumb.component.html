@@ -1,0 +1,8 @@
+<nav class="breadcrumb-container" *ngIf="breadcrumbs$ | async as breadcrumbs">
+  <ng-container *ngFor="let breadcrumb of breadcrumbs; let last = last">
+    <a [routerLink]="breadcrumb.url" class="breadcrumb-link">{{
+      breadcrumb.label
+    }}</a>
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </ng-container>
+</nav>

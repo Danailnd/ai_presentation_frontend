@@ -1,0 +1,16 @@
+<mat-card
+  class="paper"
+  [ngClass]="{ clickable: clickable, 'no-padding': noPadding }"
+  matRipple
+  [matRippleDisabled]="!clickable"
+>
+  <div
+    class="paper-content"
+    [ngClass]="{
+      'scroll-enabled': enableScroll,
+      'scroll-disabled': !enableScroll
+    }"
+  >
+    <ng-content></ng-content>
+  </div>
+</mat-card>

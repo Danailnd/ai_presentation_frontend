@@ -1,0 +1,9 @@
+<app-sidebar>
+  <div class="content">
+    <app-toolbar
+      [isDarkMode]="isDarkMode"
+      (toggleTheme)="toggleTheme()"
+    ></app-toolbar>
+    <router-outlet></router-outlet>
+  </div>
+</app-sidebar>

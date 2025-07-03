@@ -1,0 +1,20 @@
+<div class="search-wrapper">
+  <mat-icon class="search-icon">search</mat-icon>
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    placeholder="Search..."
+    class="input"
+  />
+  <button
+    mat-icon-button
+    *ngIf="searchText"
+    matSuffix
+    (click)="clearSearch()"
+    aria-label="Clear"
+    class="clear-button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

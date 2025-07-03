@@ -1,0 +1,40 @@
+button[mat-button] {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--mat-sys-primary);
+  font-size: 18px;
+  color: var(--mat-sys-on-primary);
+  flex-shrink: 0;
+}
+.username {
+  font-size: 14px;
+}
+
+.avatar.large {
+  width: 60px;
+  height: 60px;
+  font-size: 26px;
+}
+
+.name {
+  font-size: 20px;
+}
+.email {
+  margin-top: 10px;
+}
+
+.user-menu-popup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+}

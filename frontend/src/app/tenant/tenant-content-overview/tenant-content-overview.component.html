@@ -1,0 +1,81 @@
+<section class="overview-container">
+  <div class="header">
+    <h2>{{ tenant?.name || "Tenant Overview" }}</h2>
+    <mat-divider></mat-divider>
+  </div>
+
+  <h3 class="section-title">Summary</h3>
+
+  <!-- Summary Section -->
+  <div class="content-columns">
+    <div class="column">
+      <div class="info-row">
+        <span class="label">Domain</span>
+        <span class="value">: {{ tenant?.domain }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Tenant Type</span>
+        <span class="value">: {{ tenant?.tenantType }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Country</span>
+        <span class="value">: {{ tenant?.country }}</span>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="info-row">
+        <span class="label">User Count</span>
+        <span class="value">: {{ tenant?.userCount }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Active Status</span>
+        <span class="value"
+          >: {{ tenant?.isActive ? "Active" : "Inactive" }}</span
+        >
+      </div>
+      <div class="info-row">
+        <span class="label">Locked Status</span>
+        <span class="value"
+          >:
+          <mat-icon
+            color="primary"
+            [matTooltip]="tenant?.locked ? 'Locked' : 'Unlocked'"
+            matTooltipShowDelay="600"
+            matTooltipPosition="right"
+          >
+            {{ tenant?.locked ? "lock" : "lock_open" }}
+          </mat-icon>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Commands Section -->
+  <mat-divider></mat-divider>
+  <h3 class="section-title">Commands</h3>
+  <div class="commands-section">
+    <div class="command-buttons">
+      <app-button
+        text="Activate"
+        icon="power_settings_new"
+        type="primary"
+        (onClick)="handleActivate()"
+      ></app-button>
+
+      <app-button
+        text="Unlock"
+        icon="lock_open"
+        type="warning"
+        (onClick)="handleUnlock()"
+      ></app-button>
+
+      <app-button
+        text="Delete"
+        icon="delete"
+        type="regular"
+        (onClick)="handleDelete()"
+      ></app-button>
+    </div>
+  </div>
+</section>

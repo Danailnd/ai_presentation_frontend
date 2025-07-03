@@ -1,0 +1,21 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 1rem;
+}
+
+.left-section {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.right-section {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.spacer {
+  flex-grow: 1;
+}
