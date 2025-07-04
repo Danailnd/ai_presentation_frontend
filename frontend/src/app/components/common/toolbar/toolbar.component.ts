@@ -1,75 +1,40 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { NavigationEnd, Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
-import { SharedService } from '../../../core/services/shared.service';
-
-import { Observable } from 'rxjs';
-import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
-import { BreakpointService } from '../../../core/services/breakpoint.service';
 
 @Component({
   selector: 'app-toolbar',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    BreadcrumbComponent,
-  ],
+  imports: [CommonModule, MatToolbarModule, MatButtonModule, RouterModule],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.scss',
 })
-export class ToolbarComponent implements OnInit {
-  @ViewChild('menuButton') menuButton?: ElementRef<HTMLButtonElement>;
+export class ToolbarComponent {
+  items = [
+    { label: 'Home', path: '/home' },
+    { label: 'About', path: '/about' },
+    { label: 'Services', path: '/services' },
+    { label: 'Contact', path: '/contact' },
+  ];
 
-  isPhoneView = false;
-  showAppName = false;
+  activeLabel: string | null = null;
 
-  loginDisplay$!: Observable<boolean>;
-  userName = '';
-  userEmail = '';
-  userInitials = '';
-  menuOpen = false;
-
-  constructor(
-    private sharedService: SharedService,
-    private router: Router,
-    private breakpointService: BreakpointService
-  ) {}
-
-  ngOnInit(): void {
+  constructor(private router: Router) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => this.updateAppNameVisibility());
-
-    this.breakpointService.isPhoneView$.subscribe((isPhone) => {
-      this.isPhoneView = isPhone;
-      this.updateAppNameVisibility();
-    });
+      .subscribe(() => {
+        const activeItem = this.items.find((item) =>
+          this.router.url.startsWith(item.path)
+        );
+        this.activeLabel = activeItem?.label ?? null;
+      });
   }
 
-  private updateAppNameVisibility(): void {
-    const isHome = this.router.url === '/' || this.router.url === '/index';
-    this.showAppName = this.isPhoneView && isHome;
-  }
-
-  toggleUserMenu(): void {
-    this.menuOpen = !this.menuOpen;
-  }
-
-  onToggleSidebar(): void {
-    this.sharedService.triggerSidebarFunction();
-  }
-
-  redirectToHome() {
-    this.router.navigate(['/']);
+  onSelect(item: { label: string; path: string }) {
+    this.activeLabel = item.label;
+    this.router.navigate([item.path]);
   }
 }

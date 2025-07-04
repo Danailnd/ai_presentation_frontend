@@ -1,30 +1,12 @@
 <mat-toolbar class="toolbar">
-  <div class="left-section">
-    <button mat-icon-button (click)="onToggleSidebar()">
-      <mat-icon>menu</mat-icon>
+  <div class="toolbar-buttons">
+    <button
+      mat-button
+      *ngFor="let item of items"
+      (click)="onSelect(item)"
+      [ngClass]="{ active: item.label === activeLabel }"
+    >
+      {{ item.label }}
     </button>
-    <app-breadcrumb style="margin-left: 5%"></app-breadcrumb>
   </div>
-
-  @if(isPhoneView){
-  <div
-    class="product-name responsive"
-    role="button"
-    tabindex="0"
-    (click)="redirectToHome()"
-    (keydown.enter)="redirectToHome()"
-    (keydown.space)="redirectToHome()"
-    *ngIf="showAppName"
-  >
-    <span class="makira-logo-text">
-      <span class="makira-line">
-        <span class="logo-m">M</span><span class="logo-akira">AKIRA</span>
-      </span>
-      <span class="brand-sub">Cloud Control Center</span>
-    </span>
-  </div>
-
-  }
-
-  <div class="right-section"></div>
 </mat-toolbar>
