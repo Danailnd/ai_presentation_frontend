@@ -5,8 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { SidebarComponent } from './components/common/sidebar/sidebar.component';
-import { ToolbarComponent } from './components/common/toolbar/toolbar.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -21,8 +19,6 @@ import { Observable } from 'rxjs';
     MatMenuModule,
     RouterModule,
     MatIconModule,
-    SidebarComponent,
-    ToolbarComponent,
   ],
 })
 export class AppComponent implements OnInit {
